@@ -1,0 +1,7 @@
+be\helb\service\GameService.class
+be\helb\DAO\GameDAO.class
+be\helb\model\Game.class
+be\helb\SpringFoxConfig.class
+be\helb\model\User.class
+be\helb\VideoGamesApplication.class
+be\helb\controller\Controller.class
