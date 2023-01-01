@@ -1,7 +1,15 @@
 be\helb\service\GameService.class
-be\helb\DAO\GameDAO.class
+be\helb\security\AuthorizationFilter.class
+be\helb\security\ConfigPassword.class
+be\helb\controller\UserController.class
 be\helb\model\Game.class
-be\helb\SpringFoxConfig.class
 be\helb\model\User.class
+be\helb\security\AuthenticationFilter.class
+be\helb\service\UserDetailServiceImpl.class
+be\helb\model\MyUser.class
+be\helb\security\WebSecurityConfiguration.class
+be\helb\DAO\GameDAO.class
+be\helb\DAO\UserDao.class
+be\helb\service\SwaggerConfigService.class
 be\helb\VideoGamesApplication.class
 be\helb\controller\Controller.class
