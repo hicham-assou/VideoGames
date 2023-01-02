@@ -43,13 +43,17 @@ public class Controller {
 
     @GetMapping("/get all games")
     public List<Game> getAllGames() {
-        return gameDAO.findAll();
+        return gameService.getAllGames();
     }
 
-    @GetMapping("/find a game by name/{name}")
-    public Optional<Game> getGameByName(@PathVariable String name) {
-        return gameDAO.findByName(name).stream().findFirst();
+    @GetMapping("/find a game by name")
+    public List<Game> getGameByName(@RequestParam String name) {
+        return gameService.findByName(name);
     }
 
+    @GetMapping("/find a game by price")
+    public List<Game> getGameByPrice(@RequestParam double min_price, double max_price) {
+        return gameService.findByPriceBetween(min_price, max_price);
+    }
 
 }

@@ -18,4 +18,14 @@ public class GameService {
         List<Game> gameList = gameDAO.findAll();
         return gameList;
     }
+
+    public List<Game> findByName(String name){
+        List<Game> gameList = gameDAO.findByName(name);
+        return gameList;
+    }
+
+    public List<Game> findByPriceBetween(double min_price, double max_price){
+        List<Game> gameList = gameDAO.findByPriceBetween(min_price, max_price);
+        return gameList;
+    }
 }

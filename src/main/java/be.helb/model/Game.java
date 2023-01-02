@@ -10,7 +10,6 @@ import java.time.LocalDate;
 public class Game implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ApiModelProperty
     private Long id;
 
 
