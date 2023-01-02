@@ -8,4 +8,5 @@ import java.util.List;
 @Repository
 public interface GameDAO extends JpaRepository<Game, Long> {
     List<Game> findByName(String name);
+
 }
