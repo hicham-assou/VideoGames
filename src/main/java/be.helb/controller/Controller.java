@@ -1,8 +1,11 @@
 package be.helb.controller;
 
 import be.helb.DAO.GameDAO;
+import be.helb.DAO.PlatformDAO;
 import be.helb.model.Game;
+import be.helb.model.Platform;
 import be.helb.service.GameService;
+import be.helb.service.PlatformService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
@@ -16,35 +19,33 @@ import java.util.Optional;
 @RestController
 public class Controller {
     private GameService gameService;
-    @Autowired
-    private GameDAO gameDAO;
-
 
     public Controller(GameService gameService){
         this.gameService = gameService;
     }
 
-    @GetMapping("HelloWorld")
-    public String hello(){
-        return "Hello World";
-    }
-
     @PostMapping("/add a new game")
-    public ResponseEntity<Game> addGame(@RequestBody Game game) {
-        Game savedGame = gameDAO.save(game);
+    public ResponseEntity<Game> addGame(@RequestBody Game game, @RequestParam String platform_name) {
+        Game savedGame = gameService.addGame(game, platform_name);
         return ResponseEntity.ok(savedGame);
     }
 
-    @PutMapping("/update game/{name}")
-    public ResponseEntity<Game> updateGame(@RequestBody Game game) {
-        Game savedGame = gameDAO.save(game);
-        return ResponseEntity.ok(savedGame);
+    @PutMapping("/games/{id}")
+    public ResponseEntity<Game> updateGame(@PathVariable Long id, @RequestBody Game game) {
+        Game updatedGame = gameService.updateGame(id, game);
+        if (updatedGame != null) {
+            return ResponseEntity.ok(updatedGame);
+        }
+        return ResponseEntity.notFound().build();
     }
+
 
     @GetMapping("/get all games")
     public List<Game> getAllGames() {
         return gameService.getAllGames();
     }
+
+
 
     @GetMapping("/find a game by name")
     public List<Game> getGameByName(@RequestParam String name) {

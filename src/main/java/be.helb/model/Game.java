@@ -15,8 +15,39 @@ public class Game implements Serializable {
 
     @Column(name = "name")
     private String name;
+
     @Column(name = "price")
     private Double price;
+
+    @Column(name = "description", length = 1000)
+    private String description;
+
+    @Column(name = "release_date")
+    private LocalDate releaseDate;
+
+    @Column(name = "id_user")
+    private int id_user;
+
+    @ManyToOne
+    @JoinColumn(name = "platform_id")
+    private Platform platform;
+
+    public void setPlatform(Platform platform) {
+        this.platform = platform;
+    }
+
+
+
+    public Platform getPlatform() {
+        return platform;
+    }
+
+    public void setId_user(int id_user) {
+        this.id_user = id_user;
+    }
+    public int getId_user() {
+        return id_user;
+    }
 
     public void setPrice(Double price) {
         this.price = price;
@@ -42,11 +73,7 @@ public class Game implements Serializable {
         return releaseDate;
     }
 
-    @Column(name = "description", length = 1000)
-    private String description;
 
-    @Column(name = "release_date")
-    private LocalDate releaseDate;
 
 
     public Game() {
