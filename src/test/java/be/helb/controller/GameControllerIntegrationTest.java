@@ -6,8 +6,10 @@ import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import net.bytebuddy.implementation.bind.annotation.IgnoreForBinding;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -18,21 +20,32 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class GameControllerIntegrationTest {
-
-   @Test // avant de clear and install on enleve cette methode sinn sa fonctionne pas
-    public void whenRequestPostAddGame_ThenOk(){
-        RestAssured.with().when().request("post", "/add a new game").then().statusCode(403);
-    }
-
-    /*@Test
-    public void whenRequestGetAllMyGames_ThenOk(){
-        RestAssured.with().when().request("GET", "/get all my games").then().statusCode(200);
-    }*/
     @Test
-    public void whenRequestGetAllMyGames_ThenOk() {
-        Response response = get("/get all my games");
+    public void whenRequestGetAllGames_ThenOk() {
+        Response response = get("/api/games/get all games");
         assertEquals(200, response.getStatusCode());
         List<Game> game = response.getBody().as(List.class);
         assertTrue(game.size() > 0);
     }
+
+    @Test
+    public void testFindByPriceBetween() throws Exception {
+        // Envoyer une requête GET à l'URL de l'API
+        String url = "http://localhost:8080/api/games/find a game by price?min_price=10&max_price=20";
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+        ResponseEntity<List> responseEntity = new RestTemplate().exchange(url, HttpMethod.GET, entity, List.class);
+
+        // Vérifier que la réponse a un code de statut 200 (OK)
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+
+        // Vérifier que la réponse contient une liste de jeux
+        List<Game> games = responseEntity.getBody();
+        assertTrue(games.size() > 0);
+    }
+
+
+
+
+
 }
