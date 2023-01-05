@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.security.Principal;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,17 +37,19 @@ public class Controller {
         this.userDao = userDao;
     }
    @PostMapping("add a new game")
-   public ResponseEntity<Game> addGame(@RequestBody Game game, @RequestParam String platform_name) {
+   public ResponseEntity<Game> addGame(@RequestParam String name, @RequestParam String description, @RequestParam double price, @RequestParam LocalDate release_date, @RequestParam String platform_name) {
        User user = getUserConneced();
        // Ajouter l'utilisateur à id_user du jeu
-       game.setId_user(Math.toIntExact(user.getId()));
-       Game savedGame = gameService.addGame(game, platform_name);
+       //game.setId_user(Math.toIntExact(user.getId()));
+       Game savedGame = gameService.addGame(name, description, price, release_date, platform_name, user);
        return ResponseEntity.ok(savedGame);
    }
 
     @PutMapping("update a game/{id}")
-    public ResponseEntity<Game> updateGame(@PathVariable Long id, @RequestBody Game game) {
-        Game updatedGame = gameService.updateGame(id, game, getUserConneced());
+    @ApiOperation("you must select the id of a game that is yours")
+    public ResponseEntity<Game> updateGame(@PathVariable Long id, @RequestParam String new_name, @RequestParam String new_description, @RequestParam double new_price, @RequestParam LocalDate new_release_date, @RequestParam String new_platform_name) {
+        Game updatedGame = gameService.updateGame(id, new_name, new_description, new_price, new_release_date, new_platform_name, getUserConneced());
+        //Game updatedGame = null;
         if (updatedGame != null) {
             return ResponseEntity.ok(updatedGame);
         }
@@ -62,11 +66,13 @@ public class Controller {
     }
 
     @GetMapping("get all my games")
+    @ApiOperation("display all the games you own")
     public List<Game> getAllMyGames() {
         return gameService.getAllGamesOfAUser(getUserConneced());
     }
 
     @GetMapping("get all games")
+    @ApiOperation("display all the games")
     public List<Game> getAllGames() {
         return gameService.getAllGames();
     }
@@ -79,6 +85,7 @@ public class Controller {
     }
 
     @GetMapping("find a game by price")
+    @ApiOperation("you must specify the price range you want to display")
     public List<Game> getGameByPrice(@RequestParam double min_price, double max_price) {
         return gameService.findByPriceBetween(min_price, max_price);
     }

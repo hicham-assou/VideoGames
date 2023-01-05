@@ -29,7 +29,7 @@ public class GameControllerIntegrationTest {
     }
 
     @Test
-    public void testFindByPriceBetween() throws Exception {
+    public void testFindByPriceBetween(){
         // Envoyer une requête GET à l'URL de l'API
         String url = "http://localhost:8080/api/games/find a game by price?min_price=10&max_price=20";
         HttpHeaders headers = new HttpHeaders();
@@ -39,13 +39,21 @@ public class GameControllerIntegrationTest {
         // Vérifier que la réponse a un code de statut 200 (OK)
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 
-        // Vérifier que la réponse contient une liste de jeux
         List<Game> games = responseEntity.getBody();
         assertTrue(games.size() > 0);
     }
+    @Test
+    public void testFindByName(){
+        // Envoyer une requête GET à l'URL de l'API
+        String url = "http://localhost:8080/api/games/find a game by name?name=gta";
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+        ResponseEntity<List> responseEntity = new RestTemplate().exchange(url, HttpMethod.GET, entity, List.class);
 
+        // Vérifier que la réponse a un code de statut 200 (OK)
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 
-
-
-
+        List<Game> games = responseEntity.getBody();
+        assertTrue(games.size() > 0);
+    }
 }

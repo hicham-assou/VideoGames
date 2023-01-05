@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,8 +29,15 @@ public class GameService {
         this.platformDAO = platformDAO;
     }
 
-    public Game addGame( Game game, String platform_name ) {
-        Platform platform = platformDAO.findByName(platform_name);
+    public Game addGame(String name, String description, double price, LocalDate release_date, String platformName, User user) {
+        Platform platform = platformDAO.findByName(platformName);
+        Game game = new Game();
+        game.setName(name);
+        game.setDescription(description);
+        game.setPrice(price);
+        game.setReleaseDate(release_date);
+        game.setId_user(Math.toIntExact(user.getId()));
+
         if (platform != null)
             game.setPlatform(platform);
         else
@@ -53,6 +62,26 @@ public class GameService {
                     updatedGame.setPlatform(platform);
                 }
                 // Enregistrer les modifications
+                return gameDAO.save(updatedGame);
+            }
+        }
+        return null;
+    }
+    public Game updateGame(Long id, String newName, String newDescription, double newPrice, LocalDate newReleaseDate, String newPlatformName, User user) {
+        Optional<Game> gameToUpdate = gameDAO.findById(id);
+        Platform platform = platformDAO.findByName(newPlatformName);
+        if (gameToUpdate.isPresent()) {
+            if (user.getId() == gameToUpdate.get().getId_user()) {
+                Game updatedGame = gameToUpdate.get();
+                updatedGame.setName(newName);
+                updatedGame.setDescription(newDescription);
+                updatedGame.setPrice(newPrice);
+                updatedGame.setReleaseDate(newReleaseDate);
+                if (platform != null)
+                    updatedGame.setPlatform(platform);
+                else
+                    updatedGame.setPlatform(null);
+
                 return gameDAO.save(updatedGame);
             }
         }
@@ -86,4 +115,7 @@ public class GameService {
         }
         return finalList;
     }
+
+
+
 }
