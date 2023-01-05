@@ -45,28 +45,6 @@ public class GameService {
         return gameDAO.save(game);
     }
 
-    public Game updateGame(Long id, Game game, User user) {
-        Optional<Game> gameToUpdate = gameDAO.findById(id);
-        if (gameToUpdate.isPresent()) {
-            if (user.getId() == gameToUpdate.get().getId_user()){
-                // Mettre à jour les propriétés du jeu
-                Game updatedGame = gameToUpdate.get();
-                updatedGame.setName(game.getName());
-                updatedGame.setPrice(game.getPrice());
-                updatedGame.setDescription(game.getDescription());
-                updatedGame.setReleaseDate(game.getReleaseDate());
-                //updatedGame.setId_user(game.getId_user());
-                // Mettre à jour la plateforme associée (si elle a été modifiée)
-                Platform platform = game.getPlatform();
-                if (platform.getId() != 0) {
-                    updatedGame.setPlatform(platform);
-                }
-                // Enregistrer les modifications
-                return gameDAO.save(updatedGame);
-            }
-        }
-        return null;
-    }
     public Game updateGame(Long id, String newName, String newDescription, double newPrice, LocalDate newReleaseDate, String newPlatformName, User user) {
         Optional<Game> gameToUpdate = gameDAO.findById(id);
         Platform platform = platformDAO.findByName(newPlatformName);

@@ -24,7 +24,7 @@ public class UserController {
         userDao.save(user);
     }
 
-    @PostMapping("/singupyy")
+    @PostMapping("/singuppppppppp")
     public String getSi(){
         return "ok";
     }
