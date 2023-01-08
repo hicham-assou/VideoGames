@@ -87,7 +87,7 @@ public class GameServiceTestExo {
         EasyMock.verify(gameDAO);
         assertEquals(2, result.size());
     }
-    
+
 
 
 
